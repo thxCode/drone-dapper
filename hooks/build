@@ -1,0 +1,14 @@
+#!/bin/bash
+set -ex
+source ./hooks/constant.sh
+
+build_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+git_ref=$(git rev-parse --short HEAD)
+
+for platform in "${SUPPORTED_PLATFORMS[@]}"; do
+  DOCKER_BUILDKIT=1 docker build \
+    --platform "${platform}" \
+    --build-arg BUILD_DATE="${build_date}" \
+    --build-arg VCS_REF="${git_ref}" \
+    -t "${IMAGE_NAME}-${platform////-}" .
+done
