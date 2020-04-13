@@ -1,0 +1,13 @@
+#!/bin/bash
+set -ex
+source ./hooks/constant.sh
+
+images=()
+for platform in "${SUPPORTED_PLATFORMS[@]}"; do
+  image="${IMAGE_NAME}-${platform////-}"
+  docker push ${image}
+  images+=("${image}")
+done
+
+DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create --amend "${IMAGE_NAME}" "${images[@]}"
+DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push --purge "${IMAGE_NAME}"
