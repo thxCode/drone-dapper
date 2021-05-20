@@ -1,5 +1,14 @@
-FROM --platform=$TARGETPLATFORM docker:19.03.14
-RUN apk add -U --no-cache make curl bash go
+FROM --platform=$TARGETPLATFORM golang:1.15.12-alpine3.13
+RUN set -eux; \
+        apk add -U --no-cache \
+            make \
+            curl \
+            jq \
+            bash \
+            docker-cli \
+            git \
+            openssl \
+            gcc 
 
 # NB(thxCode): automatic platform ARGs, ref to:
 # - https://docs.docker.com/engine/reference/builder/#automatic-platform-args-in-the-global-scope
@@ -25,7 +34,7 @@ LABEL \
     io.github.thxcode.license="Apache 2.0" \
     io.github.thxcode.docker.dockerfile="/Dockerfile"
 
-ENV DAPPER_VERSION=v0.5.3
+ENV DAPPER_VERSION=v0.5.6
 ENV ARCH=$TARGETARCH
 RUN if [ "${ARCH}" = "amd64" ]; then \
         export ARCH="x86_64"; \
