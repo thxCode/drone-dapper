@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM golang:1.15.12-alpine3.13
+FROM --platform=$TARGETPLATFORM golang:1.15.15-alpine3.14
 RUN set -eux; \
         apk add -U --no-cache \
             make \
